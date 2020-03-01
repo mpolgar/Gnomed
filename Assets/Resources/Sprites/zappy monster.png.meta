@@ -11,6 +11,27 @@ TextureImporter:
   - first:
       213: 3468087269126089456
     second: zappy monster_2
+  - first:
+      213: 1269705561131025874
+    second: zappy monster_3
+  - first:
+      213: -5951313584153539990
+    second: zappy monster_4
+  - first:
+      213: -2445927493598788964
+    second: zappy monster_5
+  - first:
+      213: 9015221499434793435
+    second: zappy monster_6
+  - first:
+      213: 2204412351121437621
+    second: zappy monster_7
+  - first:
+      213: 1984053600459653398
+    second: zappy monster_8
+  - first:
+      213: 3323655619772347412
+    second: zappy monster_9
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -139,7 +160,7 @@ TextureImporter:
         width: 22
         height: 17
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -160,7 +181,7 @@ TextureImporter:
         width: 22
         height: 17
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -181,7 +202,7 @@ TextureImporter:
         width: 22
         height: 17
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -189,6 +210,153 @@ TextureImporter:
       bones: []
       spriteID: 0faa05e1ffe112030800000000000000
       internalID: 3468087269126089456
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zappy monster_3
+      rect:
+        serializedVersion: 2
+        x: 6
+        y: 3
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2d58d8c0b76ee9110800000000000000
+      internalID: 1269705561131025874
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zappy monster_4
+      rect:
+        serializedVersion: 2
+        x: 70
+        y: 3
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a6a429d93dfa86da0800000000000000
+      internalID: -5951313584153539990
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zappy monster_5
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 3
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c92cea557e15e0ed0800000000000000
+      internalID: -2445927493598788964
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zappy monster_6
+      rect:
+        serializedVersion: 2
+        x: 125
+        y: 78
+        width: 52
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bd9764560308c1d70800000000000000
+      internalID: 9015221499434793435
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zappy monster_7
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 78
+        width: 52
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5b3b3179a55a79e10800000000000000
+      internalID: 2204412351121437621
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zappy monster_8
+      rect:
+        serializedVersion: 2
+        x: 241
+        y: 78
+        width: 52
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6118bb6dc36c88b10800000000000000
+      internalID: 1984053600459653398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zappy monster_9
+      rect:
+        serializedVersion: 2
+        x: 241
+        y: 36
+        width: 52
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 414f24c3d2fff1e20800000000000000
+      internalID: 3323655619772347412
       vertices: []
       indices: 
       edges: []
