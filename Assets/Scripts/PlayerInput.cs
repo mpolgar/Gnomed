@@ -28,18 +28,18 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
-    private void Start()
+    void Update()
     {
         _gamepad = Gamepad.current;
-
-        if(_gamepad == null)
+        if (_gamepad == null)
         {
             usingKeyboard = true;
         }
-    }
+        else
+        {
+            usingKeyboard = false;
+        }
 
-    void Update()
-    {
         if (usingKeyboard)
         {
             float x = Input.GetAxis("Horizontal");
@@ -70,11 +70,6 @@ public class PlayerInput : MonoBehaviour
             {
                 EventBus.Publish<InputEvent>(new InputEvent(Actions.Interact, 0, 0));
             }
-        }
-
-        if (_gamepad == null)
-        {
-            usingKeyboard = true;
         }
     }
 }
