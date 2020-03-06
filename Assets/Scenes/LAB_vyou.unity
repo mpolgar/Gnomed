@@ -450,7 +450,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7791583225dce4fedbc52db44141ce2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boundary: {fileID: 0}
+  boundary: {fileID: 1036929729}
+  player: {fileID: 1743394865}
 --- !u!1 &781821233
 GameObject:
   m_ObjectHideFlags: 0
