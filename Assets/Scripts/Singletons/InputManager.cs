@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 using UnityEngine.InputSystem;
 
 public enum Actions
@@ -30,26 +29,18 @@ public class InputEvent
     }
 }
 
-public class PlayerInput : MonoBehaviour
-{
+public class InputManager : MonoBehaviour {
     
-    public const bool DEBUG_MODE = false;
+    public bool DEBUG_MODE;
 
-    static PlayerInput instance;
-
-    private void Awake()
-    {
-        //Singleton setup
-        if (instance != null && instance != this)
-        {
-            Destroy(this.gameObject);
+    public static InputManager Instance { get => instance; }
+    private static InputManager instance;
+    private void Awake() {
+        if (instance != null && instance != this) {
+            Destroy(gameObject);
             return;
-        }
-        else
-        {
+        } else {
             instance = this;
-
-            //DontDestroyOnLoad(this.gameObject);
         }
     }
     
@@ -57,26 +48,26 @@ public class PlayerInput : MonoBehaviour
         float newValRaw = value.Get<float>();
         float newVal = (newValRaw == 0f) ? 0f : Mathf.Sign(newValRaw);
         DebugLog("moving horizontal " + newVal);
-        EventBus.Publish(new InputEvent(Actions.MoveHorizontal, newVal));
+        EventManager.Publish(new InputEvent(Actions.MoveHorizontal, newVal));
     }
     
     private void OnMoveVertical(InputValue value) {
         float newValRaw = value.Get<float>();
         float newVal = (newValRaw == 0f) ? 0f : Mathf.Sign(newValRaw);
         DebugLog("moving vertical " + newVal);
-        EventBus.Publish(new InputEvent(Actions.MoveVertical, newVal));
+        EventManager.Publish(new InputEvent(Actions.MoveVertical, newVal));
     }
     
     private void OnJump(InputValue value) {
         float val = value.Get<float>();
         Actions status = (val == 0f) ? Actions.JumpReleased : Actions.JumpPressed;
         DebugLog((val == 0f) ? "jump released" : "jump pressed");
-        EventBus.Publish(new InputEvent(status, 0f));
+        EventManager.Publish(new InputEvent(status, 0f));
     }
     
     private void OnInteract() {
         DebugLog("interact");
-        EventBus.Publish(new InputEvent(Actions.Interact, 0f));
+        EventManager.Publish(new InputEvent(Actions.Interact, 0f));
     }
     
     private void DebugLog(string message) {
