@@ -120,7 +120,7 @@ public class LaserMonsterMovement : MonoBehaviour
     private IEnumerator FireLaser()
     {
         moving = false;
-        Vector3 originalScale = transform.localScale;
+        Vector3 originalScale = effectSprite.transform.localScale;
         Vector3 destinationScale = new Vector3(1.2f, 1.2f, 1f);
 
         float currentTime = 0.0f;
