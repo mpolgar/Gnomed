@@ -14,7 +14,8 @@ public class LaserMonsterMovement : MonoBehaviour
     public float moveSpeed;
     public GameObject laser;
     public GameObject effectSprite;
-    public int debugVal;
+    public float laserFireDuration;
+    public float cooldownDuration;
 
     private Camera mainCam;
     private bool alongTop;
@@ -119,7 +120,6 @@ public class LaserMonsterMovement : MonoBehaviour
     private IEnumerator FireLaser()
     {
         moving = false;
-        yield return new WaitForSeconds(.5f);
         Vector3 originalScale = transform.localScale;
         Vector3 destinationScale = new Vector3(1.2f, 1.2f, 1f);
 
@@ -143,9 +143,9 @@ public class LaserMonsterMovement : MonoBehaviour
         effectSprite.SetActive(false);
 
         laser.SetActive(true);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(laserFireDuration);
         laser.SetActive(false);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(cooldownDuration);
         moving = true;
     }
 }
