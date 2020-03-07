@@ -3,10 +3,6 @@
  * This script implements an "Event Bus" -- a critical part of the Pub/Sub design pattern.
  * Developers should make heavy use of the Subscribe() and Publish() methods below to receive and send
  * instances of your own, custom "event" classes between systems. This "loosely couples" the systems, preventing spaghetti.
- * 
- * Please find an example usage of Publish() in ScorePointOnTouch.cs
- * Please find an example, custom Event class in ScorePointOnTouch.cs
- * Please find an example usage of Subscribe() in ScoreUI.cs
  */
 
 using System.Collections;
@@ -15,15 +11,36 @@ using System.Linq;
 using System;
 using UnityEngine;
 
-public class EventBus
-{
-    /* DEVELOPER : Change this to "true" and all events will be logged to console automatically */
-    public const bool DEBUG_MODE = false;
+public class EventManager : MonoBehaviour {
     
-    static Dictionary<Type, IList> _topics = new Dictionary<Type, IList>();
+    public bool DEBUG_MODE;
+    
+    private Dictionary<Type, IList> _topics = new Dictionary<Type, IList>();
+    
+    public static EventManager Instance { get => instance; }
+    private static EventManager instance;
+    private void Awake() {
+        if (instance != null && instance != this) {
+            Destroy(gameObject);
+            return;
+        } else {
+            instance = this;
+        }
+    }
+    
+    public static void Publish<T>(T newEvent) {
+        instance._Publish(newEvent);
+    }
+    
+    public static Subscription<T> Subscribe<T>(Action<T> callback) {
+        return instance._Subscribe(callback);
+    }
+    
+    public static void Unsubscribe<T>(Subscription<T> subscription) {
+        instance._Unsubscribe(subscription);
+    }
 
-    public static void Publish<T>(T published_event)
-    {
+    private void _Publish<T>(T published_event) {
         /* Use type T to identify correct subscriber list (correct "topic") */
         Type t = typeof(T);
 
@@ -48,7 +65,7 @@ public class EventBus
         }
     }
 
-    public static Subscription<T> Subscribe<T>(Action<T> callback)
+    private Subscription<T> _Subscribe<T>(Action<T> callback)
     {
         /* Determine event type so we can find the correct subscriber list */
         Type t = typeof(T);
@@ -66,7 +83,7 @@ public class EventBus
         return new_subscription;
     }
 
-    public static void Unsubscribe<T>(Subscription<T> subscription)
+    private void _Unsubscribe<T>(Subscription<T> subscription)
     {
         Type t = typeof(T);
 
@@ -99,6 +116,6 @@ public class Subscription<T>
 
     ~Subscription()
     {
-        EventBus.Unsubscribe<T>(this);
+        EventManager.Unsubscribe<T>(this);
     }
 }

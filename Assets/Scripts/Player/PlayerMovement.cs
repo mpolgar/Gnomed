@@ -41,7 +41,7 @@ public class PlayerMovement : MonoBehaviour
     }
     
     private void Start() {
-        inputListener = EventBus.Subscribe<InputEvent>(HandleInputEvent);
+        inputListener = EventManager.Subscribe<InputEvent>(HandleInputEvent);
     }
     
     private void FixedUpdate() {
@@ -49,9 +49,9 @@ public class PlayerMovement : MonoBehaviour
         // Determine if the player is grounded, and what object it is grounded to
         if (grounded || body.velocity.y < 0.05f) {
             
-            RaycastHit2D leftHit = Physics2D.Raycast(leftGroundRaycast.position, Vector2.down, groundRaycastDistance, LayerMask.GetMask("SolidTerrain"));
-			RaycastHit2D centerHit = Physics2D.Raycast(centerGroundRaycast.position, Vector2.down, groundRaycastDistance, LayerMask.GetMask("SolidTerrain"));
-			RaycastHit2D rightHit = Physics2D.Raycast(rightGroundRaycast.position, Vector2.down, groundRaycastDistance, LayerMask.GetMask("SolidTerrain"));
+            RaycastHit2D leftHit = Physics2D.Raycast(leftGroundRaycast.position, Vector2.down, groundRaycastDistance, LayerMask.GetMask("Terrain"));
+			RaycastHit2D centerHit = Physics2D.Raycast(centerGroundRaycast.position, Vector2.down, groundRaycastDistance, LayerMask.GetMask("Terrain"));
+			RaycastHit2D rightHit = Physics2D.Raycast(rightGroundRaycast.position, Vector2.down, groundRaycastDistance, LayerMask.GetMask("Terrain"));
             
             if (leftHit || centerHit || rightHit) {
                 
@@ -84,6 +84,9 @@ public class PlayerMovement : MonoBehaviour
 			}
             
         }
+		if (!jumping) {
+			body.gravityScale = grounded ? 0f : 1f;
+		}
         
         // When jumping, add the jump component to our movement
 		Vector2 jumpComponent = Vector2.zero;
