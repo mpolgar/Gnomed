@@ -15,11 +15,11 @@ TagManager:
   - 
   - 
   - Player
-  - PlayerTerrain
-  - Terrain
+  - PlayerSolid
+  - PlayerPassable
+  - SolidTerrain
+  - PassableTerrain
   - Trigger
-  - 
-  - 
   - 
   - 
   - 
