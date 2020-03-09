@@ -24,9 +24,17 @@ public class LaserMonsterMovement : MonoBehaviour
     private Vector2 topStartPos;
     private Vector2 sideStartPos;
 
+    Subscription<InputEvent> inputListener;
+
+    public float timeSlowDown = 0.5f;
+    float axisInput = 0f;
+
+    bool manual = false;
+
     // initiallizes private values and starts movement based on editor bool
     private void Start()
     {
+        inputListener = EventManager.Subscribe<InputEvent>(HandleInputEvents);
         moving = false;
         reverse = 1;
         mainCam = Camera.main;
@@ -39,10 +47,51 @@ public class LaserMonsterMovement : MonoBehaviour
         moving = true;
     }
 
+    void HandleInputEvents(InputEvent e)
+    {
+        //check to see if this object currently has control
+        if(!manual && e.action == Actions.Switch)
+        {
+            Debug.Log("Monster has Control");
+            Time.timeScale = timeSlowDown;
+            manual = true;
+        }
+        else if (!manual)
+        {
+            //no new actions should happen at this time
+            return;
+        }
+        else if(manual && e.action == Actions.Switch)
+        {
+            Debug.Log("Monster has lost control");
+            manual = false;
+            return;
+        }
+
+
+        //collect correct axis input per mode
+        if(e.action == Actions.MoveHorizontal && alongTop)
+        {
+            axisInput = e.axis;
+        }
+        else if(e.action == Actions.MoveVertical && !alongTop)
+        {
+            axisInput = e.axis;
+        }
+
+        if(e.action == Actions.Interact)
+        {
+            //player loses control after firing
+            moving = false;
+            StartCoroutine(FireLaser());
+            EventManager.Publish<InputEvent>(new InputEvent(Actions.Switch, 0f));
+        }
+    }
+
     // movement and raycast detection handling
     private void Update()
     {
-        if (moving)
+        if (moving && !manual)
         {
             if (DetectPlayer())
             {
@@ -68,6 +117,31 @@ public class LaserMonsterMovement : MonoBehaviour
                 {
                     transform.position = new Vector2(transform.position.x, reverse * MaxYPosition);
                     reverse = -reverse;
+                }
+            }
+        }
+        else if(manual)
+        {
+            if (alongTop)
+            {
+
+                float plusDeltaX = transform.position.x + axisInput * moveSpeed * Time.deltaTime;
+                Debug.Log(plusDeltaX);
+
+                //reverse movement if we hit the bounds
+                if (Mathf.Abs(plusDeltaX) < MaxXPosition)
+                {
+                    transform.position = new Vector2(plusDeltaX, transform.position.y);
+                }
+            }
+            else
+            {
+                float plusDeltaY = transform.position.y + axisInput * moveSpeed * Time.deltaTime;
+
+                //reverse movement if we hit the bounds
+                if (Mathf.Abs(plusDeltaY) < MaxYPosition)
+                {
+                    transform.position = new Vector2(transform.position.x, plusDeltaY);
                 }
             }
         }
@@ -111,7 +185,7 @@ public class LaserMonsterMovement : MonoBehaviour
         if (alongTop) direction = Vector2.down;
         else direction = Vector2.right;
         RaycastHit2D hit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - 1), direction);
-        if (hit.collider != null) return true;
+        if (hit.collider != null && hit.collider.CompareTag("Player")) return true;
         return false;
     }
 
