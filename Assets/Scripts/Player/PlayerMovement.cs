@@ -123,7 +123,6 @@ public class PlayerMovement : MonoBehaviour
 
         if(e.action == Actions.Switch && !manual)
         {
-            Debug.Log("Player has Control");
             Time.timeScale = 1.0f;
             manual = true;
         }
@@ -134,7 +133,6 @@ public class PlayerMovement : MonoBehaviour
         }
         else if(manual && e.action == Actions.Switch)
         {
-            Debug.Log("Player has Lost Control");
             manual = false;
             return;
         }
