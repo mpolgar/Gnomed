@@ -10,6 +10,7 @@ public enum Actions
     JumpPressed,
     JumpReleased,
     Interact,
+    Switch,
 };
 
 public class InputEvent
@@ -69,11 +70,17 @@ public class InputManager : MonoBehaviour {
         DebugLog("interact");
         EventManager.Publish(new InputEvent(Actions.Interact, 0f));
     }
+
+    private void OnSwitch()
+    {
+        DebugLog("Switch");
+        EventManager.Publish(new InputEvent(Actions.Switch, 0f));
+    }
     
     private void DebugLog(string message) {
         if (DEBUG_MODE) {
             Debug.Log("PlayerInput: " + message);
         }
     }
-    
+
 }

@@ -34,6 +34,10 @@ public class PlayerMovement : MonoBehaviour
 	private SpriteRenderer rend;
 	private Animator anim;
     private Subscription<InputEvent> inputListener;
+
+    //determines whether or not the player is controlling currently
+    bool manual = true;
+
     private void Awake() {
 		body = GetComponent<Rigidbody2D>();
 		rend = GetComponent<SpriteRenderer>();
@@ -45,7 +49,7 @@ public class PlayerMovement : MonoBehaviour
     }
     
     private void FixedUpdate() {
-        
+
         // Determine if the player is grounded, and what object it is grounded to
         if (grounded || body.velocity.y < 0.05f) {
             
@@ -116,7 +120,26 @@ public class PlayerMovement : MonoBehaviour
     }
     
     private void HandleInputEvent(InputEvent e) {
-        
+
+        if(e.action == Actions.Switch && !manual)
+        {
+            Debug.Log("Player has Control");
+            Time.timeScale = 1.0f;
+            manual = true;
+        }
+        else if (!manual)
+        {
+            //accept no new input at this time
+            return;
+        }
+        else if(manual && e.action == Actions.Switch)
+        {
+            Debug.Log("Player has Lost Control");
+            manual = false;
+            desiredSpeed = 0f;
+            return;
+        }
+
         if (e.action == Actions.MoveHorizontal) {
             desiredSpeed = e.axis * maxSpeed;
         } else if (e.action == Actions.JumpPressed && grounded) {
