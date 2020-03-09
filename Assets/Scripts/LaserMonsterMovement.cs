@@ -49,9 +49,8 @@ public class LaserMonsterMovement : MonoBehaviour
         //check to see if this object currently has control
         if(!manual && e.action == Actions.Switch)
         {
-            Time.timeScale = timeSlowDown;
             StopCoroutine("FirePeriodically");
-            manual = true;
+            StartCoroutine(MakeManualWhenReady());
         }
         else if (!manual)
         {
@@ -83,6 +82,14 @@ public class LaserMonsterMovement : MonoBehaviour
             StartCoroutine(FireLaser());
             EventManager.Publish<InputEvent>(new InputEvent(Actions.Switch, 0f));
         }
+    }
+    
+    private IEnumerator MakeManualWhenReady() {
+        while (!moving) {
+            yield return null;
+        }
+        Time.timeScale = timeSlowDown;
+        manual = true;
     }
 
     // movement and raycast detection handling

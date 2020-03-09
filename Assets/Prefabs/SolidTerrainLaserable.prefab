@@ -121,6 +121,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dca356a5ef199be4eb55ad147adb6f3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  disappearTime: 3
-  coll: {fileID: 2447617775183141747}
-  rend: {fileID: 2447617775183141746}
+  disappearTime: 2.5
