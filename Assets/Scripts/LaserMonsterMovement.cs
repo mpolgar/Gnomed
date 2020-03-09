@@ -8,25 +8,25 @@ using UnityEngine;
  */ 
 public class LaserMonsterMovement : MonoBehaviour
 {
-    public float MaxXPosition;
-    public float MaxYPosition;
     public bool startsOnTop = true;
-    public float moveSpeed;
+    public Transform playerTransform;
+    public Transform cameraTransform;
     public GameObject laser;
     public GameObject effectSprite;
     public float laserFireDuration;
     public float cooldownDuration;
+    public float chargeDuration;
+    public float fireInterval;
+    public float moveSpeed;
+    public float lerpRatio;
 
-    private Camera mainCam;
     private bool alongTop;
     private bool moving;
     private float reverse;
-    private Vector2 topStartPos;
-    private Vector2 sideStartPos;
 
     Subscription<InputEvent> inputListener;
 
-    public float timeSlowDown = 0.5f;
+    public float timeSlowDown;
     float axisInput = 0f;
 
     bool manual = false;
@@ -37,12 +37,9 @@ public class LaserMonsterMovement : MonoBehaviour
         inputListener = EventManager.Subscribe<InputEvent>(HandleInputEvents);
         moving = false;
         reverse = 1;
-        mainCam = Camera.main;
-        transform.parent = mainCam.transform;
-
-        topStartPos = new Vector2(0, MaxYPosition);
-        sideStartPos = new Vector2(-MaxXPosition, 0);
-        MovementPath(startsOnTop);
+        
+        //MovementPath(startsOnTop);
+        StartCoroutine(FirePeriodically());
 
         moving = true;
     }
@@ -70,16 +67,16 @@ public class LaserMonsterMovement : MonoBehaviour
 
 
         //collect correct axis input per mode
-        if(e.action == Actions.MoveHorizontal && alongTop)
+        if(e.action == Actions.MoveHorizontal && startsOnTop)
         {
             axisInput = e.axis;
         }
-        else if(e.action == Actions.MoveVertical && !alongTop)
+        else if(e.action == Actions.MoveVertical && !startsOnTop)
         {
             axisInput = e.axis;
         }
 
-        if(e.action == Actions.Interact)
+        if(e.action == Actions.Interact || e.action == Actions.JumpPressed)
         {
             //player loses control after firing
             moving = false;
@@ -93,56 +90,34 @@ public class LaserMonsterMovement : MonoBehaviour
     {
         if (moving && !manual)
         {
-            if (DetectPlayer())
-            {
-                moving = false;
-                StartCoroutine(FireLaser());
-            }
+            // if (DetectPlayer())
+            // {
+            //     moving = false;
+            //     StartCoroutine(FireLaser());
+            // }
 
-            if (alongTop)
+            if (startsOnTop)
             {
-                transform.position = new Vector2(transform.position.x + reverse * moveSpeed * Time.deltaTime, transform.position.y);
-
-                //reverse movement if we hit the bounds
-                if (Mathf.Abs(transform.position.x) > MaxXPosition)
-                {
-                    transform.position = new Vector2(reverse * MaxXPosition, transform.position.y);
-                    reverse = -reverse;
-                }
+                float newX = Mathf.Lerp(transform.position.x, playerTransform.position.x, lerpRatio);
+                transform.position = new Vector2(newX, cameraTransform.position.y + 9f);
             }
             else
             {
-                transform.position = new Vector2(transform.position.x, transform.position.y + reverse * moveSpeed * Time.deltaTime);
-                if (Mathf.Abs(transform.position.y) > MaxYPosition)
-                {
-                    transform.position = new Vector2(transform.position.x, reverse * MaxYPosition);
-                    reverse = -reverse;
-                }
+                float newY = Mathf.Lerp(transform.position.y, playerTransform.position.y, lerpRatio);
+                transform.position = new Vector2(cameraTransform.position.x - 12f, newY);
             }
         }
         else if(manual)
         {
-            if (alongTop)
+            if (startsOnTop)
             {
-
-                float plusDeltaX = transform.position.x + axisInput * moveSpeed * Time.deltaTime;
-                Debug.Log(plusDeltaX);
-
-                //reverse movement if we hit the bounds
-                if (Mathf.Abs(plusDeltaX) < MaxXPosition)
-                {
-                    transform.position = new Vector2(plusDeltaX, transform.position.y);
-                }
+                float plusDeltaX = transform.position.x + axisInput * moveSpeed * Time.deltaTime / timeSlowDown;
+                transform.position = new Vector2(plusDeltaX, cameraTransform.position.y + 9f);
             }
             else
             {
-                float plusDeltaY = transform.position.y + axisInput * moveSpeed * Time.deltaTime;
-
-                //reverse movement if we hit the bounds
-                if (Mathf.Abs(plusDeltaY) < MaxYPosition)
-                {
-                    transform.position = new Vector2(transform.position.x, plusDeltaY);
-                }
+                float plusDeltaY = transform.position.y + axisInput * moveSpeed * Time.deltaTime / timeSlowDown;
+                transform.position = new Vector2(cameraTransform.position.x - 12f, plusDeltaY);
             }
         }
     }
@@ -154,29 +129,29 @@ public class LaserMonsterMovement : MonoBehaviour
     }
 
     // restarts the camera following, requires the path to be followed.
-    public void StartCameraFollow(bool moveAlongTop)
-    {
-        transform.parent = mainCam.transform;
-        MovementPath(moveAlongTop);
-    }
+    // public void StartCameraFollow(bool moveAlongTop)
+    // {
+    //     transform.parent = mainCam.transform;
+    //     MovementPath(moveAlongTop);
+    // }
     
-    //Set the movement path of the monster
-    public void MovementPath(bool moveAlongTop)
-    {
-        alongTop = moveAlongTop;
-        if (alongTop)
-        {
-            transform.position = topStartPos;
-            laser.transform.localScale = new Vector3(.5f, 50f);
-            laser.transform.localPosition = new Vector3(0, -25f);
-        }
-        else
-        {
-            transform.position = sideStartPos;
-            laser.transform.localScale = new Vector3(50f, .5f);
-            laser.transform.localPosition = new Vector3(25f, -1f);
-        }
-    }
+    // //Set the movement path of the monster
+    // public void MovementPath(bool moveAlongTop)
+    // {
+    //     alongTop = moveAlongTop;
+    //     if (alongTop)
+    //     {
+    //         transform.position = topStartPos;
+    //         laser.transform.localScale = new Vector3(.5f, 50f);
+    //         laser.transform.localPosition = new Vector3(0, -25f);
+    //     }
+    //     else
+    //     {
+    //         transform.position = sideStartPos;
+    //         laser.transform.localScale = new Vector3(50f, .5f);
+    //         laser.transform.localPosition = new Vector3(25f, -1f);
+    //     }
+    // }
 
     // returns true if the player is aligned with the source of the laser
     private bool DetectPlayer()
@@ -205,7 +180,7 @@ public class LaserMonsterMovement : MonoBehaviour
             effectSprite.transform.localScale = Vector3.Lerp(originalScale, destinationScale, currentTime / .6f);
             currentTime += Time.deltaTime;
             yield return null;
-        } while (currentTime <= .6f);
+        } while (currentTime <= chargeDuration);
 
         currentTime = 0;
         do
@@ -222,4 +197,15 @@ public class LaserMonsterMovement : MonoBehaviour
         yield return new WaitForSeconds(cooldownDuration);
         moving = true;
     }
+    
+    private IEnumerator FirePeriodically() {
+        while (true) {
+            yield return new WaitForSeconds(fireInterval);
+            if (!manual) {
+                moving = false;
+                StartCoroutine(FireLaser());
+            }
+        }
+    }
+    
 }

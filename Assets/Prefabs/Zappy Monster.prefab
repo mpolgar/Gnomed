@@ -257,6 +257,7 @@ MonoBehaviour:
   effectSprite: {fileID: 8830609666699864655}
   laserFireDuration: 1
   cooldownDuration: 1
+  timeSlowDown: 0.5
 --- !u!1 &5030809877531067607
 GameObject:
   m_ObjectHideFlags: 0

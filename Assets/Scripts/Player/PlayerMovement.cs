@@ -136,7 +136,6 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.Log("Player has Lost Control");
             manual = false;
-            desiredSpeed = 0f;
             return;
         }
 
