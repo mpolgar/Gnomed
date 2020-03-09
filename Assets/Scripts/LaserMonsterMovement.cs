@@ -119,6 +119,15 @@ public class LaserMonsterMovement : MonoBehaviour
                 float plusDeltaY = transform.position.y + axisInput * moveSpeed * Time.deltaTime / timeSlowDown;
                 transform.position = new Vector2(cameraTransform.position.x - 12f, plusDeltaY);
             }
+        } else {
+            if (startsOnTop)
+            {
+                transform.position = new Vector2(transform.position.x, cameraTransform.position.y + 9f);
+            }
+            else
+            {
+                transform.position = new Vector2(cameraTransform.position.x - 12f, transform.position.y);
+            }
         }
     }
     

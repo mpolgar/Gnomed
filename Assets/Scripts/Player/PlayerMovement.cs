@@ -129,6 +129,7 @@ public class PlayerMovement : MonoBehaviour
         else if (!manual)
         {
             //accept no new input at this time
+            desiredSpeed = 0f;
             return;
         }
         else if(manual && e.action == Actions.Switch)
