@@ -6,6 +6,6 @@ using UnityEngine;
 // All singleton objects are added as sub-objects of the overseer
 public class Overseer : MonoBehaviour {
     private void Awake() {
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
     }
 }
