@@ -39,7 +39,7 @@ public class LaserMonsterMovement : MonoBehaviour
         reverse = 1;
         
         //MovementPath(startsOnTop);
-        StartCoroutine(FirePeriodically());
+        StartCoroutine("FirePeriodically");
 
         moving = true;
     }
@@ -49,8 +49,8 @@ public class LaserMonsterMovement : MonoBehaviour
         //check to see if this object currently has control
         if(!manual && e.action == Actions.Switch)
         {
-            Debug.Log("Monster has Control");
             Time.timeScale = timeSlowDown;
+            StopCoroutine("FirePeriodically");
             manual = true;
         }
         else if (!manual)
@@ -60,8 +60,8 @@ public class LaserMonsterMovement : MonoBehaviour
         }
         else if(manual && e.action == Actions.Switch)
         {
-            Debug.Log("Monster has lost control");
             manual = false;
+            StartCoroutine("FirePeriodically");
             return;
         }
 
