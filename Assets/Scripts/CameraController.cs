@@ -5,37 +5,33 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {   
     private BoxCollider2D cameraBox;
-    private Transform player;
+    public float lerpRatio;
+    public Transform player;
     // Start is called before the first frame update
     void Start()
     {
         cameraBox = GetComponent<BoxCollider2D> ();
-        player = GameObject.FindGameObjectWithTag ("Player").GetComponent<Transform> ();
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        FollowPlayer ();
+        FollowPlayer();
     }
 
     void FollowPlayer() {
-        if (GameObject.Find("Boundary")) {
-                if (transform.position.x >= player.position.x + 0.5f) {
-                    transform.position = new Vector3 (Mathf.Clamp (player.position.x + 0.5f, GameObject.Find ("Boundary").GetComponent<BoxCollider2D> ().bounds.min.x + cameraBox.size.x / 2, GameObject.Find ("Boundary").GetComponent<BoxCollider2D> ().bounds.max.x - cameraBox.size.x / 2),
-                                                  Mathf.Clamp (player.position.y, GameObject.Find ("Boundary").GetComponent<BoxCollider2D> ().bounds.min.y + cameraBox.size.y / 2, GameObject.Find ("Boundary").GetComponent<BoxCollider2D> ().bounds.max.y - cameraBox.size.y / 2),
-                                                  transform.position.z);
-                }
-                else if (transform.position.x <= player.position.x - 0.5f) {
-                    transform.position = new Vector3 (Mathf.Clamp (player.position.x - 0.5f, GameObject.Find ("Boundary").GetComponent<BoxCollider2D> ().bounds.min.x + cameraBox.size.x / 2, GameObject.Find ("Boundary").GetComponent<BoxCollider2D> ().bounds.max.x - cameraBox.size.x / 2),
-                                                  Mathf.Clamp (player.position.y, GameObject.Find ("Boundary").GetComponent<BoxCollider2D> ().bounds.min.y + cameraBox.size.y / 2, GameObject.Find ("Boundary").GetComponent<BoxCollider2D> ().bounds.max.y - cameraBox.size.y / 2),
-                                                  transform.position.z);
-                }
-                else {
-                    transform.position = new Vector3 (transform.position.x,
-                                                  Mathf.Clamp (player.position.y, GameObject.Find ("Boundary").GetComponent<BoxCollider2D> ().bounds.min.y + cameraBox.size.y / 2, GameObject.Find ("Boundary").GetComponent<BoxCollider2D> ().bounds.max.y - cameraBox.size.y / 2),
-                                                  transform.position.z);
-                }
+        
+        GameObject boundary = GameObject.Find("Boundary");
+        if (boundary != null) {
+            
+            BoxCollider2D boundBox = boundary.GetComponent<BoxCollider2D>();
+            float desiredX = Mathf.Clamp(player.position.x, boundBox.bounds.min.x + cameraBox.size.x / 2f, boundBox.bounds.max.x - cameraBox.size.x / 2f);
+            float desiredY = Mathf.Clamp(player.position.y, boundBox.bounds.min.y + cameraBox.size.y / 2f, boundBox.bounds.max.y - cameraBox.size.y / 2f);
+            
+            Vector3 desiredPos = new Vector3(desiredX, desiredY, transform.position.z);
+            transform.position = Vector3.Lerp(transform.position, desiredPos, lerpRatio);
+            
         }
+        
     }
 }

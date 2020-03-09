@@ -49,9 +49,9 @@ public class PlayerMovement : MonoBehaviour
         // Determine if the player is grounded, and what object it is grounded to
         if (grounded || body.velocity.y < 0.05f) {
             
-            RaycastHit2D leftHit = Physics2D.Raycast(leftGroundRaycast.position, Vector2.down, groundRaycastDistance, LayerMask.GetMask("Terrain"));
-			RaycastHit2D centerHit = Physics2D.Raycast(centerGroundRaycast.position, Vector2.down, groundRaycastDistance, LayerMask.GetMask("Terrain"));
-			RaycastHit2D rightHit = Physics2D.Raycast(rightGroundRaycast.position, Vector2.down, groundRaycastDistance, LayerMask.GetMask("Terrain"));
+            RaycastHit2D leftHit = Physics2D.Raycast(leftGroundRaycast.position, Vector2.down, groundRaycastDistance, LayerMask.GetMask("SolidTerrain", "PassableTerrain"));
+			RaycastHit2D centerHit = Physics2D.Raycast(centerGroundRaycast.position, Vector2.down, groundRaycastDistance, LayerMask.GetMask("SolidTerrain", "PassableTerrain"));
+			RaycastHit2D rightHit = Physics2D.Raycast(rightGroundRaycast.position, Vector2.down, groundRaycastDistance, LayerMask.GetMask("SolidTerrain", "PassableTerrain"));
             
             if (leftHit || centerHit || rightHit) {
                 
@@ -119,6 +119,9 @@ public class PlayerMovement : MonoBehaviour
         
         if (e.action == Actions.MoveHorizontal) {
             desiredSpeed = e.axis * maxSpeed;
+			if (e.axis != 0f) {
+				rend.flipX = (e.axis < 0f);
+			}
         } else if (e.action == Actions.JumpPressed && grounded) {
             jumping = true;
             body.gravityScale = 0f;
