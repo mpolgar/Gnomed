@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1733419178025227156}
   - component: {fileID: 1733419178025227157}
   - component: {fileID: 4177643807540474534}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: KillBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 6200000, guid: c22ca09879726c444a36eeff0ec3a7fa, type: 2}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
