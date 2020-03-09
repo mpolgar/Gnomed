@@ -126,4 +126,4 @@ MonoBehaviour:
     type: 3}
   moveSpeed: 7
   retractSpeed: 5
-  pauseTime: 2
+  pauseTime: 2.5
